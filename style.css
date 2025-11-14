@@ -4,7 +4,8 @@ body {
     color: #fff;
     font-family: 'Segoe UI', sans-serif;
     min-height: 100vh;
-    padding: 20px 10px;
+    padding: 20px 0;
+    overflow: hidden;
 }
 .container {
     max-width: 400px;
@@ -12,151 +13,83 @@ body {
     text-align: center;
 }
 h1 {
-    font-size: 36px;
+    font-size: 42px;
     background: linear-gradient(90deg, #00ff88, #00d0ff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 30px;
 }
-.settings {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 10px;
-}
-.input-group {
-    flex: 1;
-}
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
-}
-.input-group input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
-    background: #1a1a2e;
-    color: #fff;
-    font-size: 16px;
-}
-button {
-    padding: 14px 0;
-    width: 100%;
-    margin: 10px 0;
-    border: none;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-#startGame {
-    background: linear-gradient(90deg, #00ff88, #00d0ff);
-    color: #000;
-}
-#cashout {
-    background: #00ff88;
-    color: #000;
-}
-#showMines {
-    background: #ff2d55;
-    color: #fff;
-}
-button:disabled {
-    background: #333 !important;
-    cursor: not-allowed;
-}
 
-/* Сетка с фоном из ibb.co/VW2tWYT0 */
+/* Точная копия фона сетки 1win */
 .grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    max-width: 360px;
-    margin: 30px auto;
-    background-image: url('https://i.ibb.co/VW2tWYT0/mines-grid-bg.png'); /* Твоя сетка! */
-    background-size: cover;
-    background-position: center;
-    padding: 12px;
-    border-radius: 20px;
+    gap: 9px;
+    max-width: 380px;
+    margin: 0 auto;
+    padding: 18px;
+    background: url('https://i.ibb.co/VW2tWYT0/mines-grid-bg.png') center/cover no-repeat;
+    border-radius: 24px;
     position: relative;
 }
 .grid::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.3); /* Затемнение для красоты */
-    border-radius: 20px;
-    z-index: 1;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    border-radius: 24px;
+    pointer-events: none;
 }
+
 .cell {
-    position: relative;
-    width: 100%;
     aspect-ratio: 1;
-    background: rgba(22, 33, 62, 0.8); /* Полупрозрачный для фона */
-    border-radius: 12px;
+    background: rgba(22, 33, 62, 0.85);
+    border-radius: 16px;
     cursor: pointer;
-    transition: 0.3s;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 30px;
+    font-size: 0;
+    transition: all 0.3s ease;
+    position: relative;
     z-index: 2;
-    backdrop-filter: blur(5px);
-}
-.cell.safe { 
-    background: rgba(15, 94, 54, 0.9) !important; 
-    transform: scale(0.95);
-    box-shadow: 0 5px 20px rgba(0,255,136,0.5);
-}
-.cell.mine { 
-    background: rgba(139, 30, 63, 0.9) !important; 
-    animation: explode 0.5s ease-out;
-}
-@keyframes explode {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(0.8); }
+    backdrop-filter: blur(4px);
 }
 
-/* Звёздочки */
-.stars {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 18px;
-    color: #ffd700;
-    text-shadow: 0 0 10px #ffd700;
-    pointer-events: none;
-    z-index: 3;
+/* Когда открыта — одна большая звезда */
+.cell.opened {
+    background: rgba(15, 94, 54, 0.95);
+    transform: scale(0.94);
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
 }
-.cell.cheat { 
-    box-shadow: 0 0 25px #00ff00, inset 0 0 20px #00ff0040 !important;
+.cell.opened::after {
+    content: '⭐';
+    font-size: 52px;
+    animation: pop 0.6s ease-out;
+}
+
+/* Читерская подсветка */
+.cell.cheat {
+    box-shadow: 0 0 30px #00ff00, inset 0 0 20px #00ff0080 !important;
     border: 3px solid #00ff00;
-    animation: glow 1s infinite alternate;
-}
-@keyframes glow {
-    from { box-shadow: 0 0 25px #00ff00, inset 0 0 20px #00ff0040; }
-    to { box-shadow: 0 0 40px #00ff88, inset 0 0 30px #00ff0060; }
 }
 
-#gameInfo {
-    margin: 20px 0;
-    font-size: 20px;
+@keyframes pop {
+    0% { transform: scale(0) rotate(0deg); }
+    70% { transform: scale(1.3) rotate(20deg); }
+    100% { transform: scale(1) rotate(0deg); }
 }
-#multiplier { font-size: 28px; margin: 10px 0; color: #00ff88; }
-#winAmount { color: #ffd700; margin-bottom: 15px; }
 
-.hidden { display: none !important; }
-
-#result {
-    font-size: 28px;
+#showAll {
     margin-top: 30px;
-    padding: 20px;
-    background: rgba(255,0,0,0.3);
+    padding: 16px;
+    width: 90%;
+    max-width: 380px;
+    background: #ff2d55;
+    color: white;
+    border: none;
     border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
 }
-.win { background: rgba(0,255,0,0.3) !important; }
